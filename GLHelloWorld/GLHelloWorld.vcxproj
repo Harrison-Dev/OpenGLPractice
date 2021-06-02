@@ -131,13 +131,19 @@
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cc" />
+    <ClCompile Include="src\stb_image.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\shader.h" />
+    <ClInclude Include="src\headers\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader\frag.glsl" />
     <None Include="src\shader\vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\textures\awesomeface.png" />
+    <Image Include="src\textures\container.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

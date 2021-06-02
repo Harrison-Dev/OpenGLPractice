@@ -24,14 +24,28 @@
     <ClCompile Include="src\shader.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="src\stb_image.cc">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\shader.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\stb_image.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader\vert.glsl" />
     <None Include="src\shader\frag.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\textures\container.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\awesomeface.png">
+      <Filter>資源檔</Filter>
+    </Image>
   </ItemGroup>
 </Project>
