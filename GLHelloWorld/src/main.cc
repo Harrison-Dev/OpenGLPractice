@@ -3,6 +3,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "headers/shader.h"
 #include "headers/stb_image.h"
 
@@ -56,7 +60,7 @@ int main()
 	unsigned int indices[] = { 
 		0, 1, 3, 
 		1, 2, 3  
-	};
+};
 
 	unsigned int VAO;
 	unsigned int VBO;
@@ -142,6 +146,7 @@ int main()
 
 
 
+
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
@@ -155,14 +160,35 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		float timeValue = glfwGetTime();
-		myShader.setFloat("sine_time", sin(10*timeValue));
-
+		float sineTime = sin(10 * timeValue);
+		myShader.setFloat("sine_time", sineTime);
 		myShader.setFloat("mix_t", mixValue);
 
+		// Trans 1
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
 
+		unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+		// Draw 1
 		myShader.use();
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		// Trans 2
+		float slowSineTime = sin(timeValue);
+		trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(-0.5f, +0.5f, 0.0f));
+		trans = glm::scale(trans, glm::abs(slowSineTime) * glm::vec3(1.0f, 1.0f, 1.0f));
+
+		//unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+		// Draw 2
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
