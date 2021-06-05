@@ -28,7 +28,9 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	int screenWidth = 800, screenHeight = 600;
+
+	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
 	
 	if (window == NULL)
 	{
@@ -50,11 +52,11 @@ int main()
 
 	// Prepare vertex
 	float vertices[] = {
-		// positions          // colors           // texture coords (note that we changed them to 'zoom in' on our texture image)
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+		// positions          // texture coords
+		 0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
 	};
 
 	unsigned int indices[] = { 
@@ -78,15 +80,12 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	// Position Prop
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// Colour Prop
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	// texture coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	// Texture Prop
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
 
 	// Texture
 	unsigned int texture1, texture2;
@@ -144,9 +143,6 @@ int main()
 	myShader.setInt("texture1", 0);
 	myShader.setInt("texture2", 1);
 
-
-
-
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
@@ -159,36 +155,30 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
+		// activate shader
+		myShader.use();
+
 		float timeValue = glfwGetTime();
 		float sineTime = sin(10 * timeValue);
 		myShader.setFloat("sine_time", sineTime);
 		myShader.setFloat("mix_t", mixValue);
 
-		// Trans 1
-		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)timeValue, glm::vec3(0.0f, 0.0f, 1.0f));
+		// Matrice
+		glm::mat4 model = glm::mat4(1.0f);;
+		glm::mat4 view = glm::mat4(1.0f);;
+		glm::mat4 projection = glm::mat4(1.0f);;
 
-		unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		projection = glm::perspective(glm::radians(45.0f), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+
+		myShader.setMat4("model", model);
+		myShader.setMat4("view", view);
+		myShader.setMat4("projection", projection);
 
 		// Draw 1
-		myShader.use();
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		// Trans 2
-		float slowSineTime = sin(timeValue);
-		trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(-0.5f, +0.5f, 0.0f));
-		trans = glm::scale(trans, glm::abs(slowSineTime) * glm::vec3(1.0f, 1.0f, 1.0f));
-
-		//unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-		// Draw 2
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
