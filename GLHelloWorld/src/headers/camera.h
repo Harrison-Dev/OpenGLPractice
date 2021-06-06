@@ -60,6 +60,30 @@ public:
 		updateCameraVectors();
 	}
 
+	//glm::mat4 myLookAt(const glm::vec3 &eye, const glm::vec3 &center, const glm::vec3 &up)
+	//{
+	//	glm::vec3 zaxis = glm::normalize(eye - center);
+	//	glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(up), zaxis));
+	//	glm::vec3 yaxis = glm::cross(zaxis, xaxis);
+
+	//	glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default
+	//	translation[3][0] = -eye.x; // Third column, first row
+	//	translation[3][1] = -eye.y;
+	//	translation[3][2] = -eye.z;
+	//	glm::mat4 rotation = glm::mat4(1.0f);
+	//	rotation[0][0] = xaxis.x; // First column, first row
+	//	rotation[1][0] = xaxis.y;
+	//	rotation[2][0] = xaxis.z;
+	//	rotation[0][1] = yaxis.x; // First column, second row
+	//	rotation[1][1] = yaxis.y;
+	//	rotation[2][1] = yaxis.z;
+	//	rotation[0][2] = zaxis.x; // First column, third row
+	//	rotation[1][2] = zaxis.y;
+	//	rotation[2][2] = zaxis.z;
+
+	//	return rotation * translation;
+	//}
+
 	// returns the view matrix calculated using Euler Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
