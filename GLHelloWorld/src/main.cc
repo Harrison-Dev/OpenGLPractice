@@ -9,18 +9,29 @@
 
 #include "headers/shader.h"
 #include "headers/stb_image.h"
+#include "headers/camera.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);	
 
 void glProgramDebug(unsigned int shaderProgram);
 
 void glShaderDebug(unsigned int vertexShader);
 
+const int screenWidth = 800, screenHeight = 600;
+
 float mixValue = 0.2f;
 float fieldOfView = 45.0f;
-float cameraX = 0.3f;
-float invCameraY = 0.0f;
+
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = screenWidth / 2.0f;
+float lastY = screenHeight / 2.0f;
+bool firstMouse = true;
+
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
 
 int main()
 {
@@ -30,7 +41,6 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-	int screenWidth = 800, screenHeight = 600;
 
 	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
 	
@@ -182,6 +192,9 @@ int main()
 	myShader.setInt("texture2", 1);
 
 	glEnable(GL_DEPTH_TEST);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	glm::vec3 cubePositions[] = {
 	  glm::vec3(0.0f,  0.0f,  0.0f),
@@ -198,8 +211,12 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-		processInput(window);
+		// Calculate delta time
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
+		processInput(window);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -217,15 +234,13 @@ int main()
 		myShader.setFloat("sine_time", sineTime);
 		myShader.setFloat("mix_t", mixValue);
 
-		// Matrice
-		glm::mat4 view = glm::mat4(1.0f);;
-		glm::mat4 projection = glm::mat4(1.0f);;
-
-		view = glm::translate(view, glm::vec3(cameraX, -invCameraY, -3.0f));
-		projection = glm::perspective(glm::radians(fieldOfView), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
-
-		myShader.setMat4("view", view);
+		// pass projection matrix to shader (note that in this case it could change every frame)
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 		myShader.setMat4("projection", projection);
+
+		// camera/view transformation
+		glm::mat4 view = camera.GetViewMatrix();
+		myShader.setMat4("view", view);
 
 		// Draw 10 boxe	s
 		size_t len = sizeof(cubePositions) / sizeof(cubePositions[0]);
@@ -236,11 +251,11 @@ int main()
 			float rotMultipier = (float)glfwGetTime() * (i % 3 + 1);
 			model = glm::rotate(model, rotMultipier * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 			myShader.setMat4("model", model);
+			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
 		// Draw 1
-		glBindVertexArray(VAO);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
@@ -285,33 +300,35 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
 	{
-		fieldOfView += 0.01f; // change this value accordingly (might be too slow or too fast based on system hardware)
-		//if (mixValue >= 1.0f)
-			//fieldOfView = 1.0f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
-	{
-		fieldOfView -= 0.01f; // change this value accordingly (might be too slow or too fast based on system hardware)
-		if (fieldOfView <= 0.0f)
-			fieldOfView = 0.0f;
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		cameraX += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		cameraX -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-	}
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
-		invCameraY += 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		invCameraY -= 0.001f; // change this value accordingly (might be too slow or too fast based on system hardware)
-	}
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+	lastX = xpos;
+	lastY = ypos;
+
+	camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.ProcessMouseScroll(yoffset);
 }
