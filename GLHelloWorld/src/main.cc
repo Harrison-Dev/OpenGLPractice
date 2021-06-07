@@ -33,6 +33,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+// lighting
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
 int main()
 {
 	glfwInit();
@@ -60,7 +63,8 @@ int main()
 		return -1;
 	}
 
-	Shader myShader("src/shader/vert.glsl", "src/shader/frag.glsl");
+	Shader litObjShader("src/shader/vert.glsl", "src/shader/frag.glsl");
+	Shader lightCubeShader("src/shader/vert.glsl", "src/shader/light_frag.glsl");
 
 	// Prepare vertex
 	float vertices[] = {
@@ -135,6 +139,16 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
+	// Light Geo
+	unsigned int lightCubeVAO;
+	glGenVertexArrays(1, &lightCubeVAO);
+	glBindVertexArray(lightCubeVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
 	// Texture
 	unsigned int texture1, texture2;
 
@@ -187,9 +201,9 @@ int main()
 	}
 	stbi_image_free(data);
 
-	myShader.use();
-	myShader.setInt("texture1", 0);
-	myShader.setInt("texture2", 1);
+	litObjShader.use();
+	litObjShader.setInt("texture1", 0);
+	litObjShader.setInt("texture2", 1);
 
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -227,20 +241,24 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		// activate shader
-		myShader.use();
+		litObjShader.use();
+
+		litObjShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		litObjShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+
 
 		float timeValue = glfwGetTime();
 		float sineTime = sin(10 * timeValue);
-		myShader.setFloat("sine_time", sineTime);
-		myShader.setFloat("mix_t", mixValue);
+		litObjShader.setFloat("sine_time", sineTime);
+		litObjShader.setFloat("mix_t", mixValue);
 
 		// pass projection matrix to shader (note that in this case it could change every frame)
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
-		myShader.setMat4("projection", projection);
+		litObjShader.setMat4("projection", projection);
 
 		// camera/view transformation
 		glm::mat4 view = camera.GetViewMatrix();
-		myShader.setMat4("view", view);
+		litObjShader.setMat4("view", view);
 
 		// Draw 10 boxe	s
 		size_t len = sizeof(cubePositions) / sizeof(cubePositions[0]);
@@ -250,10 +268,22 @@ int main()
 			model = glm::translate(model, cubePositions[i]);
 			float rotMultipier = (float)glfwGetTime() * (i % 3 + 1);
 			model = glm::rotate(model, rotMultipier * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
-			myShader.setMat4("model", model);
+			litObjShader.setMat4("model", model);
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+
+		// also draw the lamp object
+		lightCubeShader.use();
+		lightCubeShader.setMat4("projection", projection);
+		lightCubeShader.setMat4("view", view);
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+		lightCubeShader.setMat4("model", model);
+
+		glBindVertexArray(lightCubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// Draw 1
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

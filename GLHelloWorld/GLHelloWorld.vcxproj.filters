@@ -42,6 +42,7 @@
   <ItemGroup>
     <None Include="src\shader\vert.glsl" />
     <None Include="src\shader\frag.glsl" />
+    <None Include="src\shader\light_frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
