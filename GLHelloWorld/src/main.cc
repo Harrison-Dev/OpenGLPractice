@@ -246,17 +246,30 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		// also draw the lamp object
-		lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-		lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;
-
 		// activate shader
 		litObjShader.use();
 
-		litObjShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		litObjShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 1.3f);
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // 降低影响
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响
+
 		litObjShader.setVec3("viewPos", camera.Position);
-		litObjShader.setVec3("lightPos", lightPos);
+		litObjShader.setVec3("light.position", lightPos);
+
+		// light properties
+		litObjShader.setVec3("light.ambient", 1.0f, 1.0f, 1.0f); // note that all light colors are set at full intensity
+		litObjShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+		litObjShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+		// material properties
+		litObjShader.setVec3("material.ambient", 0.0f, 0.1f, 0.06f);
+		litObjShader.setVec3("material.diffuse", 0.0f, 0.50980392f, 0.50980392f);
+		litObjShader.setVec3("material.specular", 0.50196078f, 0.50196078f, 0.50196078f);
+		litObjShader .setFloat("material.shininess", 32.0f);
 
 		float timeValue = glfwGetTime();
 		float sineTime = sin(10 * timeValue);
@@ -271,7 +284,13 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		litObjShader.setMat4("view", view);
 
-		// Draw 10 boxe	s
+		//glm::mat4 cubeModel = glm::mat4(1.0f);
+		//litObjShader.setMat4("model", cubeModel);
+
+		//glBindVertexArray(VAO);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		//// Draw 10 boxe	s
 		size_t len = sizeof(cubePositions) / sizeof(cubePositions[0]);
 		for (size_t i = 0; i < len; i++)
 		{
@@ -283,6 +302,7 @@ int main()
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+
 
 		lightCubeShader.use();
 		lightCubeShader.setMat4("projection", projection);
