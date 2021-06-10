@@ -158,6 +158,7 @@ int main()
 	// Texture
 	unsigned int diffuseMap = loadTexture("src/textures/container2.png");
 	unsigned int specularMap = loadTexture("src/textures/container2_specular.png");
+	unsigned int emissionMap = loadTexture("src/textures/matrix.jpg");
 
 
 	glEnable(GL_DEPTH_TEST);
@@ -181,6 +182,7 @@ int main()
 	litObjShader.use();
 	litObjShader.setInt("material.diffuse", 0);
 	litObjShader.setInt("material.specular", 1);
+	litObjShader.setInt("material.emission", 2);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -234,12 +236,14 @@ int main()
 		glm::mat4 cubeModel = glm::mat4(1.0f);
 		litObjShader.setMat4("model", cubeModel);
 
-		// bind diffuse map
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, diffuseMap);
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, emissionMap);
 
 		//glBindVertexArray(VAO);
 		//glDrawArrays(GL_TRIANGLES, 0, 36);

@@ -57,5 +57,8 @@
     <Image Include="src\textures\container2_specular.png">
       <Filter>資源檔</Filter>
     </Image>
+    <Image Include="src\textures\matrix.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
   </ItemGroup>
 </Project>
