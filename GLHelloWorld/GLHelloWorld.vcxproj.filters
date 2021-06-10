@@ -51,5 +51,11 @@
     <Image Include="src\textures\awesomeface.png">
       <Filter>資源檔</Filter>
     </Image>
+    <Image Include="src\textures\container2.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\container2_specular.png">
+      <Filter>資源檔</Filter>
+    </Image>
   </ItemGroup>
 </Project>
