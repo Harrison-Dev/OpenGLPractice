@@ -184,7 +184,6 @@ int main()
 	litObjShader.setInt("material.specular", 1);
 	litObjShader.setInt("material.emission", 2);
 
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Calculate delta time
@@ -209,12 +208,19 @@ int main()
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响
 
 		litObjShader.setVec3("viewPos", camera.Position);
-		litObjShader.setVec3("light.position", lightPos);
 
 		// light properties
 		litObjShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
 		litObjShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
 		litObjShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		litObjShader.setFloat("light.constant", 1.0f);
+		litObjShader.setFloat("light.linear", 0.09f);
+		litObjShader.setFloat("light.quadratic", 0.032f);
+
+		litObjShader.setVec3("light.position", camera.Position);
+		litObjShader.setVec3("light.direction", camera.Front);
+		litObjShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		litObjShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 
 		// material properties
 		litObjShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
@@ -254,8 +260,8 @@ int main()
 		{
 			glm::mat4 model = glm::mat4(1.0f);;
 			model = glm::translate(model, cubePositions[i]);
-			float rotMultipier = (float)glfwGetTime() * (i % 3 + 1);
-			model = glm::rotate(model, rotMultipier * glm::radians(50.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			litObjShader.setMat4("model", model);
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
