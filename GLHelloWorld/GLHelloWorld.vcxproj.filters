@@ -38,6 +38,12 @@
     <ClInclude Include="src\headers\camera.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="src\headers\mesh.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="src\headers\model.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader\vert.glsl" />
