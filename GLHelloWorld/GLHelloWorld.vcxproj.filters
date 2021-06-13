@@ -49,6 +49,8 @@
     <None Include="src\shader\vert.glsl" />
     <None Include="src\shader\frag.glsl" />
     <None Include="src\shader\light_frag.glsl" />
+    <None Include="models\nanosuit\nanosuit.blend" />
+    <None Include="models\nanosuit\nanosuit.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
@@ -66,5 +68,62 @@
     <Image Include="src\textures\matrix.jpg">
       <Filter>資源檔</Filter>
     </Image>
+    <Image Include="models\nanosuit\arm_dif.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\arm_showroom_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\arm_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\body_dif.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\body_showroom_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\body_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\glass_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\glass_dif.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\hand_dif.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\hand_showroom_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\hand_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\helmet_diff.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\helmet_showroom_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\helmet_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\leg_dif.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\leg_showroom_ddn.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="models\nanosuit\leg_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="models\nanosuit\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="models\nanosuit\nanosuit.obj" />
   </ItemGroup>
 </Project>

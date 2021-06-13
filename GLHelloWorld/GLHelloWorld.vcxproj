@@ -141,16 +141,43 @@
     <ClInclude Include="src\headers\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="models\nanosuit\nanosuit.blend" />
+    <None Include="models\nanosuit\nanosuit.mtl" />
     <None Include="src\shader\frag.glsl" />
     <None Include="src\shader\vert.glsl" />
     <None Include="src\shader\light_frag.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="models\nanosuit\arm_dif.png" />
+    <Image Include="models\nanosuit\arm_showroom_ddn.png" />
+    <Image Include="models\nanosuit\arm_showroom_spec.png" />
+    <Image Include="models\nanosuit\body_dif.png" />
+    <Image Include="models\nanosuit\body_showroom_ddn.png" />
+    <Image Include="models\nanosuit\body_showroom_spec.png" />
+    <Image Include="models\nanosuit\glass_ddn.png" />
+    <Image Include="models\nanosuit\glass_dif.png" />
+    <Image Include="models\nanosuit\hand_dif.png" />
+    <Image Include="models\nanosuit\hand_showroom_ddn.png" />
+    <Image Include="models\nanosuit\hand_showroom_spec.png" />
+    <Image Include="models\nanosuit\helmet_diff.png" />
+    <Image Include="models\nanosuit\helmet_showroom_ddn.png" />
+    <Image Include="models\nanosuit\helmet_showroom_spec.png" />
+    <Image Include="models\nanosuit\leg_dif.png" />
+    <Image Include="models\nanosuit\leg_showroom_ddn.png" />
+    <Image Include="models\nanosuit\leg_showroom_spec.png" />
     <Image Include="src\textures\awesomeface.png" />
     <Image Include="src\textures\container.jpg" />
     <Image Include="src\textures\container2.png" />
     <Image Include="src\textures\container2_specular.png" />
     <Image Include="src\textures\matrix.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="models\nanosuit\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="models\nanosuit\nanosuit.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
