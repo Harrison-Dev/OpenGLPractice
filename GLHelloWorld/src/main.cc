@@ -20,6 +20,8 @@ unsigned int loadTexture(const char *path);
 
 void glProgramDebug(unsigned int shaderProgram);
 
+void DrawModel(Shader &litObjShader, Model &testModel, float scale);
+
 void glShaderDebug(unsigned int vertexShader);
 
 const int screenWidth = 800, screenHeight = 600;
@@ -78,6 +80,7 @@ int main()
 	glfwSetScrollCallback(window, scroll_callback);
 
 	Shader litObjShader("src/shader/vert.glsl", "src/shader/frag.glsl");
+	Shader shaderSingleColor("src/shader/vert.glsl", "src/shader/simplecolor_frag.glsl");
 	
 	Model testModel("models/nanosuit/nanosuit.obj");
 
@@ -85,6 +88,9 @@ int main()
 	litObjShader.setInt("material.diffuse", 0);
 	litObjShader.setInt("material.specular", 1);
 	litObjShader.setInt("material.emission", 2);
+
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -96,91 +102,24 @@ int main()
 		processInput(window);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-		// activate shader
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilMask(0xFF);
+
 		litObjShader.use();
+		DrawModel(litObjShader, testModel, 1.0);
 
-		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime() * 2.0f);
-		lightColor.y = sin(glfwGetTime() * 0.7f);
-		lightColor.z = sin(glfwGetTime() * 1.3f);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDisable(GL_DEPTH_TEST);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // 降低影响
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响
+		shaderSingleColor.use();
+		DrawModel(shaderSingleColor, testModel, 1.1);
 
-		litObjShader.setVec3("viewPos", camera.Position);
-
-		// directional light
-		litObjShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		litObjShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-		litObjShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-		litObjShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-		// point light 1
-		litObjShader.setVec3("pointLights[0].position", pointLightPositions[0]);
-		litObjShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-		litObjShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-		litObjShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-		litObjShader.setFloat("pointLights[0].constant", 1.0f);
-		litObjShader.setFloat("pointLights[0].linear", 0.09);
-		litObjShader.setFloat("pointLights[0].quadratic", 0.032);
-		// point light 2
-		litObjShader.setVec3("pointLights[1].position", pointLightPositions[1]);
-		litObjShader.setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
-		litObjShader.setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
-		litObjShader.setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
-		litObjShader.setFloat("pointLights[1].constant", 1.0f);
-		litObjShader.setFloat("pointLights[1].linear", 0.09);
-		litObjShader.setFloat("pointLights[1].quadratic", 0.032);
-		// point light 3
-		litObjShader.setVec3("pointLights[2].position", pointLightPositions[2]);
-		litObjShader.setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-		litObjShader.setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-		litObjShader.setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-		litObjShader.setFloat("pointLights[2].constant", 1.0f);
-		litObjShader.setFloat("pointLights[2].linear", 0.09);
-		litObjShader.setFloat("pointLights[2].quadratic", 0.032);
-		// point light 4
-		litObjShader.setVec3("pointLights[3].position", pointLightPositions[3]);
-		litObjShader.setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-		litObjShader.setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-		litObjShader.setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-		litObjShader.setFloat("pointLights[3].constant", 1.0f);
-		litObjShader.setFloat("pointLights[3].linear", 0.09);
-		litObjShader.setFloat("pointLights[3].quadratic", 0.032);
-		// spotLight
-		litObjShader.setVec3("spotLight.position", camera.Position);
-		litObjShader.setVec3("spotLight.direction", camera.Front);
-		litObjShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-		litObjShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-		litObjShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-		litObjShader.setFloat("spotLight.constant", 1.0f);
-		litObjShader.setFloat("spotLight.linear", 0.09);
-		litObjShader.setFloat("spotLight.quadratic", 0.032);
-		litObjShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-		litObjShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-
-		// material properties
-		litObjShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-		litObjShader.setFloat("material.shininess", 64.0f);
-
-		float timeValue = glfwGetTime();
-		float sineTime = sin(10 * timeValue);
-		litObjShader.setFloat("sine_time", sineTime);
-		litObjShader.setFloat("mix_t", mixValue);
-
-		// view/projection transformations
-		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
-		glm::mat4 view = camera.GetViewMatrix();
-		litObjShader.setMat4("projection", projection);
-		litObjShader.setMat4("view", view);
-
-		// render the loaded model
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-		litObjShader.setMat4("model", model);
-		testModel.Draw(litObjShader);
+		glStencilMask(0xFF);
+		glStencilFunc(GL_ALWAYS, 0, 0xFF);
+		glEnable(GL_DEPTH_TEST);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -189,6 +128,92 @@ int main()
 	glfwTerminate();
 
 	return 0;
+}
+
+void DrawModel(Shader &litObjShader, Model &testModel, float scale)
+{
+	// activate shader
+
+	glm::vec3 lightColor;
+	lightColor.x = sin(glfwGetTime() * 2.0f);
+	lightColor.y = sin(glfwGetTime() * 0.7f);
+	lightColor.z = sin(glfwGetTime() * 1.3f);
+
+	glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // 降低影响
+	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响
+
+	litObjShader.setVec3("viewPos", camera.Position);
+
+	// directional light
+	litObjShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+	litObjShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+	litObjShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+	litObjShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+	// point light 1
+	litObjShader.setVec3("pointLights[0].position", pointLightPositions[0]);
+	litObjShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+	litObjShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+	litObjShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+	litObjShader.setFloat("pointLights[0].constant", 1.0f);
+	litObjShader.setFloat("pointLights[0].linear", 0.09);
+	litObjShader.setFloat("pointLights[0].quadratic", 0.032);
+	// point light 2
+	litObjShader.setVec3("pointLights[1].position", pointLightPositions[1]);
+	litObjShader.setVec3("pointLights[1].ambient", 0.05f, 0.05f, 0.05f);
+	litObjShader.setVec3("pointLights[1].diffuse", 0.8f, 0.8f, 0.8f);
+	litObjShader.setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+	litObjShader.setFloat("pointLights[1].constant", 1.0f);
+	litObjShader.setFloat("pointLights[1].linear", 0.09);
+	litObjShader.setFloat("pointLights[1].quadratic", 0.032);
+	// point light 3
+	litObjShader.setVec3("pointLights[2].position", pointLightPositions[2]);
+	litObjShader.setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
+	litObjShader.setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
+	litObjShader.setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
+	litObjShader.setFloat("pointLights[2].constant", 1.0f);
+	litObjShader.setFloat("pointLights[2].linear", 0.09);
+	litObjShader.setFloat("pointLights[2].quadratic", 0.032);
+	// point light 4
+	litObjShader.setVec3("pointLights[3].position", pointLightPositions[3]);
+	litObjShader.setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
+	litObjShader.setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
+	litObjShader.setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
+	litObjShader.setFloat("pointLights[3].constant", 1.0f);
+	litObjShader.setFloat("pointLights[3].linear", 0.09);
+	litObjShader.setFloat("pointLights[3].quadratic", 0.032);
+	// spotLight
+	litObjShader.setVec3("spotLight.position", camera.Position);
+	litObjShader.setVec3("spotLight.direction", camera.Front);
+	litObjShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+	litObjShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+	litObjShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+	litObjShader.setFloat("spotLight.constant", 1.0f);
+	litObjShader.setFloat("spotLight.linear", 0.09);
+	litObjShader.setFloat("spotLight.quadratic", 0.032);
+	litObjShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+	litObjShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+
+	// material properties
+	litObjShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+	litObjShader.setFloat("material.shininess", 64.0f);
+
+	float timeValue = glfwGetTime();
+	float sineTime = sin(10 * timeValue);
+	litObjShader.setFloat("sine_time", sineTime);
+	litObjShader.setFloat("mix_t", mixValue);
+
+	// view/projection transformations
+	glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+	glm::mat4 view = camera.GetViewMatrix();
+	litObjShader.setMat4("projection", projection);
+	litObjShader.setMat4("view", view);
+
+	// render the loaded model
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+	model = glm::scale(model, scale * glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+	litObjShader.setMat4("model", model);
+	testModel.Draw(litObjShader);
 }
 
 void glProgramDebug(unsigned int shaderProgram)

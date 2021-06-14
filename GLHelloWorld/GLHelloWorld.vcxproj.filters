@@ -51,6 +51,7 @@
     <None Include="src\shader\light_frag.glsl" />
     <None Include="models\nanosuit\nanosuit.blend" />
     <None Include="models\nanosuit\nanosuit.mtl" />
+    <None Include="src\shader\simplecolor_frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
