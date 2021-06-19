@@ -18,20 +18,20 @@
     <ClCompile Include="src\glad.c">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="src\main.cc">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="src\stb_image.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="src\model_main.cc">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main_alpha_clip_blend.cc">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\headers\shader.h">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="src\headers\stb_image.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
@@ -44,14 +44,18 @@
     <ClInclude Include="src\headers\model.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="src\headers\shader.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader\vert.glsl" />
     <None Include="src\shader\frag.glsl" />
-    <None Include="src\shader\light_frag.glsl" />
     <None Include="models\nanosuit\nanosuit.blend" />
     <None Include="models\nanosuit\nanosuit.mtl" />
     <None Include="src\shader\simplecolor_frag.glsl" />
+    <None Include="src\shader\texture_frag.glsl" />
+    <None Include="src\shader\texture_vert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
@@ -118,6 +122,15 @@
       <Filter>資源檔</Filter>
     </Image>
     <Image Include="models\nanosuit\leg_showroom_spec.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\blending_transparent_window.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\grass.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\metal.png">
       <Filter>資源檔</Filter>
     </Image>
   </ItemGroup>

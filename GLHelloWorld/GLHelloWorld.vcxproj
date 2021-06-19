@@ -128,9 +128,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\main_alpha_clip_blend.cc" />
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\main.cc" />
+    <ClCompile Include="src\model_main.cc" />
     <ClCompile Include="src\stb_image.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -143,10 +144,11 @@
   <ItemGroup>
     <None Include="models\nanosuit\nanosuit.blend" />
     <None Include="models\nanosuit\nanosuit.mtl" />
+    <None Include="src\shader\texture_vert.glsl" />
     <None Include="src\shader\simplecolor_frag.glsl" />
     <None Include="src\shader\frag.glsl" />
     <None Include="src\shader\vert.glsl" />
-    <None Include="src\shader\light_frag.glsl" />
+    <None Include="src\shader\texture_frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="models\nanosuit\arm_dif.png" />
@@ -167,10 +169,13 @@
     <Image Include="models\nanosuit\leg_showroom_ddn.png" />
     <Image Include="models\nanosuit\leg_showroom_spec.png" />
     <Image Include="src\textures\awesomeface.png" />
+    <Image Include="src\textures\blending_transparent_window.png" />
     <Image Include="src\textures\container.jpg" />
     <Image Include="src\textures\container2.png" />
     <Image Include="src\textures\container2_specular.png" />
+    <Image Include="src\textures\grass.png" />
     <Image Include="src\textures\matrix.jpg" />
+    <Image Include="src\textures\metal.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="models\nanosuit\LICENSE.txt" />
