@@ -56,6 +56,8 @@
     <None Include="src\shader\simplecolor_frag.glsl" />
     <None Include="src\shader\texture_frag.glsl" />
     <None Include="src\shader\texture_vert.glsl" />
+    <None Include="src\shader\fb_frag.glsl" />
+    <None Include="src\shader\fb_vert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">

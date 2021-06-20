@@ -144,6 +144,8 @@
   <ItemGroup>
     <None Include="models\nanosuit\nanosuit.blend" />
     <None Include="models\nanosuit\nanosuit.mtl" />
+    <None Include="src\shader\fb_frag.glsl" />
+    <None Include="src\shader\fb_vert.glsl" />
     <None Include="src\shader\texture_vert.glsl" />
     <None Include="src\shader\simplecolor_frag.glsl" />
     <None Include="src\shader\frag.glsl" />
