@@ -58,6 +58,8 @@
     <None Include="src\shader\texture_vert.glsl" />
     <None Include="src\shader\fb_frag.glsl" />
     <None Include="src\shader\fb_vert.glsl" />
+    <None Include="src\shader\cubemap_vert.glsl" />
+    <None Include="src\shader\cubemap_frag.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
@@ -133,6 +135,24 @@
       <Filter>資源檔</Filter>
     </Image>
     <Image Include="src\textures\metal.png">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\left.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\right.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\top.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\back.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\bottom.jpg">
+      <Filter>資源檔</Filter>
+    </Image>
+    <Image Include="src\textures\skybox\front.jpg">
       <Filter>資源檔</Filter>
     </Image>
   </ItemGroup>
