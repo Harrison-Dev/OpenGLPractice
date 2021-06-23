@@ -144,6 +144,10 @@
   <ItemGroup>
     <None Include="models\nanosuit\nanosuit.blend" />
     <None Include="models\nanosuit\nanosuit.mtl" />
+    <None Include="models\nanosuit_reflection\nanosuit.blend" />
+    <None Include="models\nanosuit_reflection\nanosuit.mtl" />
+    <None Include="src\shader\reflect_frag.glsl" />
+    <None Include="src\shader\reflect_vert.glsl" />
     <None Include="src\shader\cubemap_frag.glsl" />
     <None Include="src\shader\cubemap_vert.glsl" />
     <None Include="src\shader\fb_frag.glsl" />
@@ -172,6 +176,29 @@
     <Image Include="models\nanosuit\leg_dif.png" />
     <Image Include="models\nanosuit\leg_showroom_ddn.png" />
     <Image Include="models\nanosuit\leg_showroom_spec.png" />
+    <Image Include="models\nanosuit_reflection\arm_dif.png" />
+    <Image Include="models\nanosuit_reflection\arm_showroom_ddn.png" />
+    <Image Include="models\nanosuit_reflection\arm_showroom_refl.png" />
+    <Image Include="models\nanosuit_reflection\arm_showroom_spec.png" />
+    <Image Include="models\nanosuit_reflection\body_dif.png" />
+    <Image Include="models\nanosuit_reflection\body_showroom_ddn.png" />
+    <Image Include="models\nanosuit_reflection\body_showroom_refl.png" />
+    <Image Include="models\nanosuit_reflection\body_showroom_spec.png" />
+    <Image Include="models\nanosuit_reflection\glass_ddn.png" />
+    <Image Include="models\nanosuit_reflection\glass_dif.png" />
+    <Image Include="models\nanosuit_reflection\glass_refl.png" />
+    <Image Include="models\nanosuit_reflection\hand_dif.png" />
+    <Image Include="models\nanosuit_reflection\hand_showroom_ddn.png" />
+    <Image Include="models\nanosuit_reflection\hand_showroom_refl.png" />
+    <Image Include="models\nanosuit_reflection\hand_showroom_spec.png" />
+    <Image Include="models\nanosuit_reflection\helmet_diff.png" />
+    <Image Include="models\nanosuit_reflection\helmet_showroom_ddn.png" />
+    <Image Include="models\nanosuit_reflection\helmet_showroom_refl.png" />
+    <Image Include="models\nanosuit_reflection\helmet_showroom_spec.png" />
+    <Image Include="models\nanosuit_reflection\leg_dif.png" />
+    <Image Include="models\nanosuit_reflection\leg_showroom_ddn.png" />
+    <Image Include="models\nanosuit_reflection\leg_showroom_refl.png" />
+    <Image Include="models\nanosuit_reflection\leg_showroom_spec.png" />
     <Image Include="src\textures\awesomeface.png" />
     <Image Include="src\textures\blending_transparent_window.png" />
     <Image Include="src\textures\container.jpg" />
@@ -189,9 +216,13 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="models\nanosuit\LICENSE.txt" />
+    <Text Include="models\nanosuit_reflection\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="models\nanosuit\nanosuit.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="models\nanosuit_reflection\nanosuit.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
   </ItemGroup>

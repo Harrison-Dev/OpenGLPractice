@@ -5,6 +5,8 @@ struct Material {
     sampler2D diffuse;
     sampler2D specular;
 	sampler2D emission;
+	sampler2D texture_reflection;
+	samplerCube skybox;
     float     shininess;
 };  
 struct Light {
@@ -82,9 +84,15 @@ void main()
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir); 
     
-	result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
+	result += CalcSpotLight(spotLight, norm, FragPos, viewDir); 
+	
+	vec3 R = reflect(-viewDir, norm);
+	vec3 reflectMap = vec3(texture(material.texture_reflection, TexCoords));
+	vec3 reflection = vec3(texture(material.skybox, R).rgb) * reflectMap;
+
+	result += reflection;
 
     FragColor = vec4(result, 1.0);
 }
@@ -98,6 +106,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 ambient  = light.ambient  * vec3(texture(material.diffuse, TexCoords));
     vec3 diffuse  = light.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));
     vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+
     return (ambient + diffuse + specular);
 }
 
