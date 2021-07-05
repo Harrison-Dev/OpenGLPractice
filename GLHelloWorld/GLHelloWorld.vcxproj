@@ -132,6 +132,7 @@
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\model_main.cc" />
+    <ClCompile Include="src\advanced_gl_main.cc" />
     <ClCompile Include="src\stb_image.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <None Include="models\nanosuit\nanosuit.mtl" />
     <None Include="models\nanosuit_reflection\nanosuit.blend" />
     <None Include="models\nanosuit_reflection\nanosuit.mtl" />
+    <None Include="src\shader\bufferblock_vert.glsl" />
     <None Include="src\shader\reflect_frag.glsl" />
     <None Include="src\shader\reflect_vert.glsl" />
     <None Include="src\shader\cubemap_frag.glsl" />

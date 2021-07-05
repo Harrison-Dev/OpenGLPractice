@@ -30,6 +30,9 @@
     <ClCompile Include="src\main_alpha_clip_blend.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="src\advanced_gl_main.cc">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\stb_image.h">
@@ -64,6 +67,7 @@
     <None Include="src\shader\reflect_frag.glsl" />
     <None Include="models\nanosuit_reflection\nanosuit.blend" />
     <None Include="models\nanosuit_reflection\nanosuit.mtl" />
+    <None Include="src\shader\bufferblock_vert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\textures\container.jpg">
