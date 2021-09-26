@@ -24,9 +24,6 @@
     <ClCompile Include="src\stb_image.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="src\model_main.cc">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\stb_image.h">

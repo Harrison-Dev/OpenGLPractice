@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\model_main.cc" />
     <ClCompile Include="src\stb_image.cc" />
   </ItemGroup>
   <ItemGroup>
