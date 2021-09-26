@@ -15,7 +15,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);	
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadTexture(const char *path);
 
 void glProgramDebug(unsigned int shaderProgram);
@@ -56,7 +56,7 @@ int main()
 
 
 	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", NULL, NULL);
-	
+
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -133,10 +133,10 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-	Shader shaderRed("src/shader/bufferblock_vert.glsl", "src/shader/simplecolor_frag.glsl");
-	Shader shaderGreen("src/shader/bufferblock_vert.glsl", "src/shader/simplecolor_frag.glsl");
-	Shader shaderBlue("src/shader/bufferblock_vert.glsl", "src/shader/simplecolor_frag.glsl");
-	Shader shaderYellow("src/shader/bufferblock_vert.glsl", "src/shader/simplecolor_frag.glsl");
+	Shader shaderRed("../GLCore/src/shader/bufferblock_vert.glsl", "../GLCore/src/shader/simplecolor_frag.glsl");
+	Shader shaderGreen("../GLCore/src/shader/bufferblock_vert.glsl", "../GLCore/src/shader/simplecolor_frag.glsl");
+	Shader shaderBlue("../GLCore/src/shader/bufferblock_vert.glsl", "../GLCore/src/shader/simplecolor_frag.glsl");
+	Shader shaderYellow("../GLCore/src/shader/bufferblock_vert.glsl", "../GLCore/src/shader/simplecolor_frag.glsl");
 
 	unsigned int uniformBlockIndexRed = glGetUniformBlockIndex(shaderRed.ID, "Matrices");
 	unsigned int uniformBlockIndexGreen = glGetUniformBlockIndex(shaderGreen.ID, "Matrices");

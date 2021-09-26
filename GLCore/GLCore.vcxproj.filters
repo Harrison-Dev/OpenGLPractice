@@ -27,12 +27,6 @@
     <ClCompile Include="src\model_main.cc">
       <Filter>來源檔案</Filter>
     </ClCompile>
-    <ClCompile Include="src\main_alpha_clip_blend.cc">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
-    <ClCompile Include="src\advanced_gl_main.cc">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\headers\stb_image.h">

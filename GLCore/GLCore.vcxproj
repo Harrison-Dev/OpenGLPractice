@@ -133,11 +133,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\main_alpha_clip_blend.cc" />
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\model_main.cc" />
-    <ClCompile Include="src\advanced_gl_main.cc" />
     <ClCompile Include="src\stb_image.cc" />
   </ItemGroup>
   <ItemGroup>
